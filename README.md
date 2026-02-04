@@ -6,11 +6,18 @@
 [![Unreal Engine](https://img.shields.io/badge/Unreal%20Engine-5-black.svg)](https://www.unrealengine.com/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-> **A complete, production-ready RPG/MMORPG system with 430+ items, 72 zones, full database, and Unreal Engine 5 integration!**
+> **A complete, production-ready RPG/MMORPG system with 430+ items, 72 zones, full database, Unreal Engine 5 blueprint framework, and 300+ pages of documentation!**
 
 ---
 
 ## 🌟 **FEATURES**
+
+### **Universal Blueprint Framework (50+ Menus)**
+- ✅ **Complete Menu System** - Main menu, pause, settings, character, social, quests, map, shop
+- ✅ **50+ Menu Types** - Fully documented with hierarchy
+- ✅ **12+ Game Systems** - Character, inventory, combat, progression, quest, multiplayer, shop, etc.
+- ✅ **287+ Blueprints Specified** - Production-ready implementations
+- ✅ **300+ Pages Documentation** - Complete guides, templates, and examples
 
 ### **Complete Game Systems (28 Files)**
 - ✅ **Character System** - 12 races, 12 classes, 40+ specializations
@@ -39,229 +46,126 @@
 ### **Unreal Engine 5 Integration**
 - ✅ Complete C++ source code
 - ✅ Component-based architecture
+- ✅ Blueprint framework ready
 - ✅ Multiplayer networking ready
 - ✅ Data export tools
-- ✅ Blueprint examples
-- ✅ 50+ pages of documentation
+- ✅ 300+ pages of documentation
+
+---
+
+## 📂 **PROJECT STRUCTURE**
+
+```
+rpg-text-game-v1/
+├── Documentation/                 ← 📚 ALL DOCUMENTATION HERE
+│   ├── Blueprints/               (17 files - Blueprint Framework)
+│   ├── Setup/                    (5 files - UE5 Installation)
+│   ├── WorldSystem/              (5 files - Game World)
+│   ├── README.md                 (Documentation index)
+│   └── *.md                      (Project summaries)
+├── UnrealEngine5/
+│   ├── Source/RPGProject/        (C++ source code)
+│   │   ├── Input/
+│   │   ├── UI/
+│   │   ├── Components/
+│   │   └── MMORPG/
+│   └── Documentation/            (UE5-specific guides)
+├── Database/
+│   ├── Schemas (3 parts)
+│   ├── Setup scripts
+│   └── Entities/
+├── Game/                         (C# game systems)
+├── UI/                          (UI screens)
+├── SaveSystem/                  (Save/Load)
+├── MenuSystem/                  (Menu management)
+├── README.md                    (This file)
+└── LICENSE
+```
 
 ---
 
 ## 🚀 **QUICK START**
 
-### **Option 1: Play Console Game**
-
+### **Option 1: Unreal Engine 5 Blueprint Framework (15 minutes)**
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/epic-rpg-game.git
-cd epic-rpg-game
+# 1. Clone the repository
+git clone https://github.com/ArkansasIo/rpg-text-game-v1.git
+cd rpg-text-game-v1
 
-# Restore packages
+# 2. Read quick start guide
+Start with: Documentation/Setup/UNREAL_ENGINE_5_QUICK_START_15MIN.md
+
+# 3. Create UE5 project (via Epic Games Launcher)
+# 4. Start building blueprints!
+```
+
+### **Option 2: C# Game System (5 minutes)**
+```bash
+# 1. Clone the repository
+git clone https://github.com/ArkansasIo/rpg-text-game-v1.git
+cd rpg-text-game-v1
+
+# 2. Restore dependencies
 dotnet restore
 
-# Run the game
+# 3. Run database setup
+cd Database
+./SetupDatabase.ps1
+
+# 4. Run the game
+cd ..
 dotnet run
 ```
-
-### **Option 2: Setup Database**
-
-```powershell
-# Navigate to database folder
-cd Database
-
-# Run automated setup (Windows)
-.\SetupDatabase.ps1
-
-# Or use batch file
-.\SetupDatabase.bat
-```
-
-### **Option 3: Export to Unreal Engine 5**
-
-```powershell
-# Navigate to UE5 folder
-cd UnrealEngine5
-
-# Export all data
-.\UE5_DataExport.ps1
-```
-
----
-
-## 📊 **PROJECT STATISTICS**
-
-| Category | Count |
-|----------|-------|
-| **Total Files** | 80+ |
-| **Lines of Code** | 50,000+ |
-| **C# Files** | 32 |
-| **SQL Files** | 8 |
-| **Database Tables** | 80+ |
-| **Items** | 430+ |
-| **Zones** | 72 |
-| **Races** | 12 |
-| **Classes** | 12 |
-| **Specializations** | 40+ |
-| **Professions** | 14 |
-| **Dungeons** | 8+ |
-| **Enemy Types** | 26+ |
-
----
-
-## 🎯 **GAME FEATURES**
-
-### **Character System**
-- **12 Playable Races**: Human, Dwarf, Elf, Orc, Troll, Undead, Night Elf, Tauren, Gnome, Blood Elf, Draenei, Worgen
-- **12 Classes**: Warrior, Mage, Rogue, Priest, Paladin, Hunter, Shaman, Warlock, Druid, Monk, Death Knight, Demon Hunter
-- **Level Progression**: 1-60 with experience system
-- **Stat System**: Strength, Agility, Intelligence, Stamina, Spirit
-
-### **430+ Items**
-- **185 Weapons**: Swords, Axes, Bows, Staves, Daggers, Maces
-- **145 Armor Pieces**: All slots, all armor types
-- **50 Consumables**: Potions, food, buffs
-- **50 Crafting Materials**: Ores, cloth, herbs, enchanting materials
-- **Legendary Items**: Frostmourne, Ashbringer, Thunderfury, Hand of Ragnaros, Atiesh
-
-### **72 Zones**
-- Starting Zones (1-20)
-- Mid-Level Zones (21-40)
-- High-Level Zones (41-55)
-- End-Game Zones (56-60)
-- 20 Different Biomes
-- 15 Underground Zones
-
-### **Combat & Abilities**
-- Real-time combat system
-- Abilities with cooldowns
-- Resource management (Mana, Energy, Rage, Combo Points)
-- Status effects (Buffs, Debuffs, DOT, HOT, CC)
-- Boss mechanics and encounters
-
----
-
-## 📁 **PROJECT STRUCTURE**
-
-```
-epic-rpg-game/
-├── Game/                          # Core game systems (28 files)
-│   ├── RPGGame.cs                 # Main game controller
-│   ├── CharacterSystem.cs         # Race/class/spec system
-│   ├── CombatSystem.cs            # Combat mechanics
-│   ├── AdvancedInventorySystem.cs # Inventory management
-│   ├── QuestSystem.cs             # Quest tracking
-│   ├── ZoneSystem.cs              # 72 zones
-│   ├── DungeonSystem.cs           # Dungeons & raids
-│   ├── TalentTreeSystem.cs        # Talent trees
-│   └── [22 more systems...]
-├── Database/                      # Database layer (24 files)
-│   ├── Schema_Part1_Core.sql     # Core tables (27 tables)
-│   ├── Schema_Part2_Social.sql   # Social features (25 tables)
-│   ├── Schema_Part3_Advanced.sql # Advanced features (28 tables)
-│   ├── Items_Complete_400Plus.sql # 430+ items (4 parts)
-│   ├── RpgDbContext.cs           # EF Core context
-│   ├── DatabaseManager.cs        # Database operations
-│   ├── Entities/                 # 11 entity classes
-│   ├── SetupDatabase.ps1         # Automated setup
-│   └── [Documentation files...]
-├── UnrealEngine5/                # UE5 integration (24+ files)
-│   ├── Source/RPGProject/        # C++ source code
-│   │   ├── RPGCharacter.h        # Complete player character
-│   │   ├── RPGGameMode.h         # Game mode
-│   │   ├── RPGTypes.h            # Enums & structs
-│   │   └── Components/           # 7 components
-│   ├── UE5_Complete_Setup_Guide.md
-│   ├── UE5_Blueprint_Cookbook.md
-│   ├── UE5_DataExport.ps1
-│   └── MASTER_INDEX.md
-├── UI/                           # UI screens (4 files)
-├── MenuSystem/                   # Menu system (3 files)
-├── SaveSystem/                   # Save/load system (2 files)
-└── README.md                     # This file
-```
-
----
-
-## 🛠️ **TECHNOLOGY STACK**
-
-### **Backend**
-- **Language**: C# 10.0
-- **Framework**: .NET 8.0
-- **Database**: SQL Server 2019+
-- **ORM**: Entity Framework Core 8.0
-
-### **Frontend Options**
-- **Console**: Rich ASCII art interface
-- **Unreal Engine 5**: Full 3D MMORPG
-
-### **Tools**
-- **Visual Studio 2022** or **Rider**
-- **SQL Server Management Studio**
-- **PowerShell** (for automation)
 
 ---
 
 ## 📚 **DOCUMENTATION**
 
-### **Getting Started**
-- [Quick Start Guide](Database/QUICK_START.md)
-- [Database Setup Instructions](Database/SETUP_INSTRUCTIONS.md)
-- [Database Schema Documentation](Database/README.md)
+### **Start Here**
+- **NEW:** [`Documentation/README.md`](Documentation/README.md) - Documentation index
+- **Quick Start:** [`Documentation/Setup/UNREAL_ENGINE_5_QUICK_START_15MIN.md`](Documentation/Setup/UNREAL_ENGINE_5_QUICK_START_15MIN.md)
+- **Blueprint Framework:** [`Documentation/Blueprints/UE5_BLUEPRINT_FRAMEWORK_QUICK_START.md`](Documentation/Blueprints/UE5_BLUEPRINT_FRAMEWORK_QUICK_START.md)
 
-### **Unreal Engine 5**
-- [Complete Setup Guide](UnrealEngine5/UE5_Complete_Setup_Guide.md)
-- [Integration Guide](UnrealEngine5/UE5_Integration_Guide.md)
-- [Blueprint Cookbook](UnrealEngine5/UE5_Blueprint_Cookbook.md)
-- [Blueprint Examples](UnrealEngine5/UE5_BlueprintExamples.md)
-- [Master Index](UnrealEngine5/MASTER_INDEX.md)
+### **Complete Documentation (300+ pages)**
+```
+Documentation/
+├── Blueprints/          17 files - Universal Blueprint Framework
+├── Setup/              5 files - UE5 Installation Guides
+├── WorldSystem/        5 files - Game World Documentation
+└── *.md               4 files - Project Summaries
+
+Total: 31 documentation files, 300+ pages, 120,000+ words
+```
+
+### **Key Guides**
+| Guide | Location | Time | Purpose |
+|-------|----------|------|---------|
+| Quick Start | `Documentation/Setup/` | 15 min | Get running fast |
+| Blueprint Framework | `Documentation/Blueprints/` | 4 weeks | Build complete game |
+| World System | `Documentation/WorldSystem/` | 1 hour | Understand game world |
+| Complete List | `Documentation/COMPLETE_DOCUMENTATION_MASTER_LIST.md` | 5 min | See everything |
 
 ---
 
-## 🎮 **GAMEPLAY**
+## 🎮 **WHAT YOU CAN BUILD**
 
-### **Main Menu**
-```
-╔════════════════════════════════════════╗
-║    ⚔️  LEGENDARY RPG ADVENTURE  ⚔️      ║
-╚════════════════════════════════════════╝
+### With This Framework:
+- ✅ **Single-Player RPG** - Complete menu & character system
+- ✅ **Multiplayer Co-op** - Party system, shared dungeons
+- ✅ **Full MMORPG** - Guilds, raids, auction house, PvP
+- ✅ **Any Scale** - Indie to AAA quality
 
-1. New Game
-2. Load Game
-3. Options
-4. Exit
-```
-
-### **Character Creation**
-Choose from:
-- **12 Races** with unique bonuses
-- **12 Classes** with different playstyles
-- **40+ Specializations** for customization
-
-### **Game World**
-- Explore **72 zones** across the world
-- Complete **quests** and earn rewards
-- Fight **26+ enemy types**
-- Conquer **8+ dungeons**
-- Join or create **guilds**
-- Craft items with **14 professions**
-- Trade in the **auction house**
-
----
-
-## 🔧 **REQUIREMENTS**
-
-### **Minimum Requirements**
-- **OS**: Windows 10/11 or Linux
-- **.NET**: 8.0 SDK or later
-- **SQL Server**: 2019+ (or SQL Express)
-- **RAM**: 4GB minimum
-- **Storage**: 2GB for database
-
-### **Recommended for UE5**
-- **OS**: Windows 10/11 (64-bit)
-- **Processor**: Quad-core Intel or AMD, 2.5 GHz+
-- **RAM**: 16GB
-- **GPU**: DirectX 11 or 12 compatible
-- **Storage**: 100GB+ for UE5 project
+### Included Systems:
+- ✅ 50+ Menu types (documented)
+- ✅ Character progression
+- ✅ Inventory management
+- ✅ Equipment system
+- ✅ Combat system
+- ✅ Quest system
+- ✅ Skill/Talent trees
+- ✅ Multiplayer features
+- ✅ Database integration
+- ✅ Save/Load system
 
 ---
 
