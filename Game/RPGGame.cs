@@ -616,7 +616,7 @@ public class RPGGame
 
             if (!_player.IsAlive)
             {
-                message += "\nYou have been defeated!",
+                message += "\nYou have been defeated!";
                 _player.Health = _player.MaxHealth / 2;
                 _player.Mana = _player.MaxMana / 2;
                 _combatSystem.EndCombat();

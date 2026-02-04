@@ -240,7 +240,7 @@ public class WorldSystemExamples
     /// <summary>
     /// Create a world lore book
     /// </summary>
-    public void GenerateWorldLoreBook()
+    public string GenerateWorldLoreBook()
     {
         var sb = new System.Text.StringBuilder();
         

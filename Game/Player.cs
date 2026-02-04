@@ -3,18 +3,28 @@ namespace RPGMenuSystem.Game;
 public class Player
 {
     public string Name { get; set; } = "Hero";
+    public string Race { get; set; } = "Human";
+    public string Class { get; set; } = "Warrior";
+    public string Specialization { get; set; } = "Sword Master";
     public int Level { get; set; } = 1;
     public int Experience { get; set; } = 0;
     public int ExperienceToNextLevel => Level * 100;
     
     public int Health { get; set; } = 100;
     public int MaxHealth { get; set; } = 100;
+    public int CurrentHealth => Health;  // Alias for database compatibility
     public int Mana { get; set; } = 50;
     public int MaxMana { get; set; } = 50;
+    public int CurrentMana => Mana;  // Alias for database compatibility
     
     public int BaseAttack { get; set; } = 10;
     public int BaseDefense { get; set; } = 5;
     public int BaseMagicPower { get; set; } = 8;
+    
+    // Character Stats
+    public int Strength { get; set; } = 10;
+    public int Agility { get; set; } = 10;
+    public int Intelligence { get; set; } = 10;
     
     public int Gold { get; set; } = 100;
     public List<Item> Inventory { get; set; } = new();

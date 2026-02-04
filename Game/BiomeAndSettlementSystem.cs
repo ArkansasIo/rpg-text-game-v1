@@ -21,7 +21,8 @@ public enum BiomeType
     FloatingIslands,
     Underwater,
     LavaFields,
-    PoisonBog
+    PoisonBog,
+    Underground
 }
 
 public enum SettlementType

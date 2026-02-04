@@ -60,7 +60,8 @@ namespace RPGMenuSystem
             SplashScreen.Show();
 
             // Show title screen
-            TitleScreen.Show();
+            var titleScreen = new TitleScreen(choice => { });
+            titleScreen.Show();
 
             // Start the game
             var game = new RPGGame();
