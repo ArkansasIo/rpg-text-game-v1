@@ -1,0 +1,20 @@
+﻿namespace RPGMenuSystem.Game;
+
+public class Player
+{
+    public string Name { get; set; } = "Hero";
+    public int Level { get; set; } = 1;
+    public int Health { get; set; } = 100;
+    public int MaxHealth { get; set; } = 100;
+    public int Mana { get; set; } = 50;
+    public int MaxMana { get; set; } = 50;
+    public int Gold { get; set; } = 100;
+    public List<Item> Inventory { get; set; } = new();
+}
+
+public class Item
+{
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public int Value { get; set; }
+}

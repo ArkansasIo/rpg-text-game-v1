@@ -1,0 +1,6 @@
+﻿using RPGMenuSystem.Game;
+
+Console.Title = "RPG Menu System - The Legend of the 72 Realms";
+
+var game = new RPGGame();
+game.Start();

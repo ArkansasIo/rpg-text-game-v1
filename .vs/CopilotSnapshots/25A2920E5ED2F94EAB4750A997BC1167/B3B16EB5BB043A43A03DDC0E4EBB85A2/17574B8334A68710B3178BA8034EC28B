@@ -1,0 +1,18 @@
+﻿{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=RPGGame;Integrated Security=true;TrustServerCertificate=true;",
+    "AlternateConnection": "Server=(localdb)\\mssqllocaldb;Database=RPGGame;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "GameSettings": {
+    "AutoSave": true,
+    "AutoSaveIntervalMinutes": 5,
+    "MaxCharactersPerAccount": 10,
+    "StartingGold": 100,
+    "StartingZoneID": 1
+  },
+  "DatabaseSettings": {
+    "EnableAutoMigration": true,
+    "EnableQueryLogging": false,
+    "CommandTimeout": 30
+  }
+}

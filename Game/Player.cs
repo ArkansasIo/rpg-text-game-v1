@@ -1,0 +1,121 @@
+namespace RPGMenuSystem.Game;
+
+public class Player
+{
+    public string Name { get; set; } = "Hero";
+    public int Level { get; set; } = 1;
+    public int Experience { get; set; } = 0;
+    public int ExperienceToNextLevel => Level * 100;
+    
+    public int Health { get; set; } = 100;
+    public int MaxHealth { get; set; } = 100;
+    public int Mana { get; set; } = 50;
+    public int MaxMana { get; set; } = 50;
+    
+    public int BaseAttack { get; set; } = 10;
+    public int BaseDefense { get; set; } = 5;
+    public int BaseMagicPower { get; set; } = 8;
+    
+    public int Gold { get; set; } = 100;
+    public List<Item> Inventory { get; set; } = new();
+    public PlayerEquipment Equipment { get; set; } = new();
+    
+    public bool IsAlive => Health > 0;
+
+    public int GetTotalAttack() => BaseAttack + Equipment.GetTotalAttack();
+    public int GetTotalDefense() => BaseDefense + Equipment.GetTotalDefense();
+    public int GetTotalMagicPower() => BaseMagicPower + Equipment.GetTotalMagicPower();
+
+    public void GainExperience(int xp)
+    {
+        Experience += xp;
+        while (Experience >= ExperienceToNextLevel)
+        {
+            LevelUp();
+        }
+    }
+
+    private void LevelUp()
+    {
+        Experience -= ExperienceToNextLevel;
+        Level++;
+        
+        MaxHealth += 20;
+        MaxMana += 10;
+        BaseAttack += 3;
+        BaseDefense += 2;
+        BaseMagicPower += 2;
+        
+        Health = MaxHealth;
+        Mana = MaxMana;
+    }
+
+    public int TakeDamage(int damage)
+    {
+        int actualDamage = Math.Max(1, damage - GetTotalDefense());
+        Health = Math.Max(0, Health - actualDamage);
+        return actualDamage;
+    }
+
+    public bool UseItem(Item item)
+    {
+        if (item.Name.Contains("Health Potion"))
+        {
+            Health = Math.Min(MaxHealth, Health + 50);
+            Inventory.Remove(item);
+            return true;
+        }
+        else if (item.Name.Contains("Mana Potion"))
+        {
+            Mana = Math.Min(MaxMana, Mana + 30);
+            Inventory.Remove(item);
+            return true;
+        }
+        else if (item.Name.Contains("Elixir"))
+        {
+            Health = Math.Min(MaxHealth, Health + 50);
+            Mana = Math.Min(MaxMana, Mana + 30);
+            Inventory.Remove(item);
+            return true;
+        }
+        return false;
+    }
+
+    public void EquipItem(Equipment equipment)
+    {
+        var currentEquipment = Equipment.GetEquipmentInSlot(equipment.Slot);
+        if (currentEquipment != null)
+        {
+            Inventory.Add(new Item 
+            { 
+                Name = currentEquipment.Name, 
+                Description = currentEquipment.Description, 
+                Value = currentEquipment.Value 
+            });
+        }
+        
+        Equipment.SetEquipmentInSlot(equipment.Slot, equipment);
+    }
+
+    public void UnequipItem(EquipmentSlot slot)
+    {
+        var equipment = Equipment.GetEquipmentInSlot(slot);
+        if (equipment != null)
+        {
+            Inventory.Add(new Item 
+            { 
+                Name = equipment.Name, 
+                Description = equipment.Description, 
+                Value = equipment.Value 
+            });
+            Equipment.SetEquipmentInSlot(slot, null);
+        }
+    }
+}
+
+public class Item
+{
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public int Value { get; set; }
+}

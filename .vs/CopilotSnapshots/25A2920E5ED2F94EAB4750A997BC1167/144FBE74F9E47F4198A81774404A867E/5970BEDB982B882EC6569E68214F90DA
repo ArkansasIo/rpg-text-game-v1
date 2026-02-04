@@ -1,0 +1,6 @@
+﻿using RPGMenuSystem.Game;
+
+Console.Title = "RPG Menu System";
+
+var game = new RPGGame();
+game.Run();

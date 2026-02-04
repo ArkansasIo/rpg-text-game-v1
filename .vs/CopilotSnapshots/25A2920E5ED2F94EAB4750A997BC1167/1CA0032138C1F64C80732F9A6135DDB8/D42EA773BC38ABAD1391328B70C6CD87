@@ -1,0 +1,362 @@
+﻿using RPGMenuSystem.MenuSystem;
+using RPGMenuSystem.SaveSystem;
+
+namespace RPGMenuSystem.Game;
+
+public class RPGGame
+{
+    private MenuManager _menuManager;
+    private Player _player;
+    private SaveManager _saveManager;
+
+    public RPGGame()
+    {
+        _menuManager = new MenuManager();
+        _saveManager = new SaveManager();
+        _player = new Player
+        {
+            Inventory = new List<Item>
+            {
+                new Item { Name = "Health Potion", Description = "Restores 50 HP", Value = 25 },
+                new Item { Name = "Mana Potion", Description = "Restores 30 MP", Value = 20 },
+                new Item { Name = "Iron Sword", Description = "A basic sword", Value = 100 }
+            }
+        };
+
+        CreateMainMenu();
+    }
+
+    private void CreateMainMenu()
+    {
+        var mainMenu = new Menu
+        {
+            Title = "Main Menu",
+            Items = new List<MenuItem>
+            {
+                new MenuItem { Text = "Character", OnSelect = () => OpenCharacterMenu() },
+                new MenuItem { Text = "Inventory", OnSelect = () => OpenInventoryMenu() },
+                new MenuItem { Text = "Skills", OnSelect = () => OpenSkillsMenu() },
+                new MenuItem { Text = "Quest Log", OnSelect = () => OpenQuestLogMenu() },
+                new MenuItem { Text = "Save/Load", OnSelect = () => OpenSaveLoadMenu() },
+                new MenuItem { Text = "Settings", OnSelect = () => OpenSettingsMenu() },
+                new MenuItem { Text = "Exit Game", OnSelect = () => ExitGame() }
+            }
+        };
+
+        _menuManager.OpenMenu(mainMenu);
+    }
+
+    private void OpenSaveLoadMenu()
+    {
+        var saveLoadMenu = new Menu
+        {
+            Title = "Save/Load Game",
+            Items = new List<MenuItem>
+            {
+                new MenuItem { Text = "Save Game", OnSelect = () => OpenSaveMenu() },
+                new MenuItem { Text = "Load Game", OnSelect = () => OpenLoadMenu() },
+                new MenuItem { Text = "Delete Save", OnSelect = () => OpenDeleteMenu() },
+                new MenuItem { Text = "Back", OnSelect = () => _menuManager.CloseCurrentMenu() }
+            }
+        };
+
+        _menuManager.OpenMenu(saveLoadMenu);
+    }
+
+    private void OpenSaveMenu()
+    {
+        var saveMenu = new Menu
+        {
+            Title = "Save Game - Select Slot",
+            Items = new List<MenuItem>()
+        };
+
+        var existingSaves = _saveManager.GetAllSaves();
+        var slotNames = new[] { "Slot 1", "Slot 2", "Slot 3", "Quick Save" };
+
+        foreach (var slotName in slotNames)
+        {
+            var existingSave = existingSaves.FirstOrDefault(s => s.SaveSlotName == slotName);
+            string displayText = slotName;
+
+            if (existingSave != null)
+            {
+                displayText += $" - {existingSave.PlayerName} Lv.{existingSave.Level} ({existingSave.SavedAt:g})";
+            }
+            else
+            {
+                displayText += " - [Empty]";
+            }
+
+            string capturedSlotName = slotName;
+            saveMenu.Items.Add(new MenuItem
+            {
+                Text = displayText,
+                OnSelect = () => SaveGame(capturedSlotName)
+            });
+        }
+
+        saveMenu.Items.Add(new MenuItem { Text = "Back", OnSelect = () => _menuManager.CloseCurrentMenu() });
+
+        _menuManager.OpenMenu(saveMenu);
+    }
+
+    private void OpenLoadMenu()
+    {
+        var loadMenu = new Menu
+        {
+            Title = "Load Game - Select Slot",
+            Items = new List<MenuItem>()
+        };
+
+        var existingSaves = _saveManager.GetAllSaves();
+
+        if (existingSaves.Count == 0)
+        {
+            loadMenu.Items.Add(new MenuItem { Text = "No saves found", IsEnabled = false });
+        }
+        else
+        {
+            foreach (var save in existingSaves)
+            {
+                string displayText = $"{save.SaveSlotName} - {save.PlayerName} Lv.{save.Level} ({save.SavedAt:g})";
+                string capturedSlotName = save.SaveSlotName;
+
+                loadMenu.Items.Add(new MenuItem
+                {
+                    Text = displayText,
+                    OnSelect = () => LoadGame(capturedSlotName)
+                });
+            }
+        }
+
+        loadMenu.Items.Add(new MenuItem { Text = "Back", OnSelect = () => _menuManager.CloseCurrentMenu() });
+
+        _menuManager.OpenMenu(loadMenu);
+    }
+
+    private void OpenDeleteMenu()
+    {
+        var deleteMenu = new Menu
+        {
+            Title = "Delete Save - Select Slot",
+            Items = new List<MenuItem>()
+        };
+
+        var existingSaves = _saveManager.GetAllSaves();
+
+        if (existingSaves.Count == 0)
+        {
+            deleteMenu.Items.Add(new MenuItem { Text = "No saves to delete", IsEnabled = false });
+        }
+        else
+        {
+            foreach (var save in existingSaves)
+            {
+                string displayText = $"{save.SaveSlotName} - {save.PlayerName} Lv.{save.Level}";
+                string capturedSlotName = save.SaveSlotName;
+
+                deleteMenu.Items.Add(new MenuItem
+                {
+                    Text = displayText,
+                    OnSelect = () => ConfirmDeleteSave(capturedSlotName)
+                });
+            }
+        }
+
+        deleteMenu.Items.Add(new MenuItem { Text = "Back", OnSelect = () => _menuManager.CloseCurrentMenu() });
+
+        _menuManager.OpenMenu(deleteMenu);
+    }
+
+    private void SaveGame(string slotName)
+    {
+        bool success = _saveManager.SaveGame(_player, slotName);
+        string message = success
+            ? $"Game saved successfully to {slotName}!"
+            : "Failed to save game.";
+
+        ShowMessage(message);
+    }
+
+    private void LoadGame(string slotName)
+    {
+        var loadedPlayer = _saveManager.LoadGame(slotName);
+
+        if (loadedPlayer != null)
+        {
+            _player = loadedPlayer;
+            ShowMessage($"Game loaded successfully from {slotName}!");
+        }
+        else
+        {
+            ShowMessage("Failed to load game.");
+        }
+    }
+
+    private void ConfirmDeleteSave(string slotName)
+    {
+        var confirmMenu = new Menu
+        {
+            Title = $"Delete {slotName}?",
+            Items = new List<MenuItem>
+            {
+                new MenuItem { Text = "Yes, delete this save", OnSelect = () => DeleteSave(slotName) },
+                new MenuItem { Text = "No, cancel", OnSelect = () => _menuManager.CloseCurrentMenu() }
+            }
+        };
+
+        _menuManager.OpenMenu(confirmMenu);
+    }
+
+    private void DeleteSave(string slotName)
+    {
+        bool success = _saveManager.DeleteSave(slotName);
+        _menuManager.CloseCurrentMenu();
+
+        string message = success
+            ? $"Save '{slotName}' deleted successfully!"
+            : "Failed to delete save.";
+
+        ShowMessage(message);
+    }
+
+    private void OpenCharacterMenu()
+    {
+        var characterMenu = new Menu
+        {
+            Title = "Character Stats",
+            Items = new List<MenuItem>
+            {
+                new MenuItem { Text = $"Name: {_player.Name}", IsEnabled = false },
+                new MenuItem { Text = $"Level: {_player.Level}", IsEnabled = false },
+                new MenuItem { Text = $"Health: {_player.Health}/{_player.MaxHealth}", IsEnabled = false },
+                new MenuItem { Text = $"Mana: {_player.Mana}/{_player.MaxMana}", IsEnabled = false },
+                new MenuItem { Text = $"Gold: {_player.Gold}", IsEnabled = false },
+                new MenuItem { Text = "Back", OnSelect = () => _menuManager.CloseCurrentMenu() }
+            }
+        };
+
+        _menuManager.OpenMenu(characterMenu);
+    }
+
+    private void OpenInventoryMenu()
+    {
+        var inventoryMenu = new Menu
+        {
+            Title = $"Inventory ({_player.Inventory.Count} items)",
+            Items = new List<MenuItem>()
+        };
+
+        foreach (var item in _player.Inventory)
+        {
+            inventoryMenu.Items.Add(new MenuItem
+            {
+                Text = $"{item.Name} - {item.Description}",
+                OnSelect = () => UseItem(item)
+            });
+        }
+
+        inventoryMenu.Items.Add(new MenuItem
+        {
+            Text = "Back",
+            OnSelect = () => _menuManager.CloseCurrentMenu()
+        });
+
+        _menuManager.OpenMenu(inventoryMenu);
+    }
+
+    private void OpenSkillsMenu()
+    {
+        var skillsMenu = new Menu
+        {
+            Title = "Skills",
+            Items = new List<MenuItem>
+            {
+                new MenuItem { Text = "Fireball (10 MP)", OnSelect = () => CastSkill("Fireball") },
+                new MenuItem { Text = "Heal (15 MP)", OnSelect = () => CastSkill("Heal") },
+                new MenuItem { Text = "Lightning Strike (20 MP)", OnSelect = () => CastSkill("Lightning Strike"), IsEnabled = _player.Level >= 5 },
+                new MenuItem { Text = "Back", OnSelect = () => _menuManager.CloseCurrentMenu() }
+            }
+        };
+
+        _menuManager.OpenMenu(skillsMenu);
+    }
+
+    private void OpenQuestLogMenu()
+    {
+        var questMenu = new Menu
+        {
+            Title = "Quest Log",
+            Items = new List<MenuItem>
+            {
+                new MenuItem { Text = "[Active] Defeat the Dragon", IsEnabled = false },
+                new MenuItem { Text = "[Active] Find the Lost Sword", IsEnabled = false },
+                new MenuItem { Text = "[Completed] Save the Village", IsEnabled = false },
+                new MenuItem { Text = "Back", OnSelect = () => _menuManager.CloseCurrentMenu() }
+            }
+        };
+
+        _menuManager.OpenMenu(questMenu);
+    }
+
+    private void OpenSettingsMenu()
+    {
+        var settingsMenu = new Menu
+        {
+            Title = "Settings",
+            Items = new List<MenuItem>
+            {
+                new MenuItem { Text = "Audio Settings", OnSelect = () => ShowMessage("Audio settings not implemented") },
+                new MenuItem { Text = "Video Settings", OnSelect = () => ShowMessage("Video settings not implemented") },
+                new MenuItem { Text = "Controls", OnSelect = () => ShowMessage("Controls settings not implemented") },
+                new MenuItem { Text = "Back", OnSelect = () => _menuManager.CloseCurrentMenu() }
+            }
+        };
+
+        _menuManager.OpenMenu(settingsMenu);
+    }
+
+    private void UseItem(Item item)
+    {
+        ShowMessage($"Used {item.Name}!");
+    }
+
+    private void CastSkill(string skillName)
+    {
+        ShowMessage($"Cast {skillName}!");
+    }
+
+    private void ShowMessage(string message)
+    {
+        var messageMenu = new Menu
+        {
+            Title = "Message",
+            Items = new List<MenuItem>
+            {
+                new MenuItem { Text = message, IsEnabled = false },
+                new MenuItem { Text = "OK", OnSelect = () => _menuManager.CloseCurrentMenu() }
+            }
+        };
+
+        _menuManager.OpenMenu(messageMenu);
+    }
+
+    private void ExitGame()
+    {
+        _menuManager.CloseAllMenus();
+    }
+
+    public void Run()
+    {
+        while (_menuManager.CurrentMenu != null)
+        {
+            _menuManager.Render();
+            var key = Console.ReadKey(true).Key;
+            _menuManager.HandleInput(key);
+        }
+
+        Console.Clear();
+        Console.WriteLine("Thanks for playing!");
+    }
+}
